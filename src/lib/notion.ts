@@ -16,7 +16,6 @@ export const getProjects = async (): Promise<Project[]> => {
     if (!token || !databaseId) throw new Error("Missing Notion env vars");
 
     try {
-        console.log("Fetching Notion data...");
         const res = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
             method: "POST",
             headers: {
@@ -36,19 +35,30 @@ export const getProjects = async (): Promise<Project[]> => {
         });
 
         if (!res.ok) {
-            const text = await res.text();
-            console.error("Notion API Error:", res.status, text);
+            console.error("Notion API Error:", res.status);
             return [];
         }
 
         const data = await res.json();
-        console.log(`Fetched ${data.results.length} projects.`);
 
         return data.results.map((page: any) => {
             const props = page.properties;
-            // Handle image extraction - prioritize cover
+
+            // Handle image extraction - prioritize "Arquivos e mídia" field, then Cover
             let image = null;
-            if (page.cover) {
+
+            // Check for "Arquivos e mídia"
+            if (props["Arquivos e mídia"]?.files?.length > 0) {
+                const file = props["Arquivos e mídia"].files[0];
+                if (file.type === 'file') {
+                    image = file.file.url;
+                } else if (file.type === 'external') {
+                    image = file.external.url;
+                }
+            }
+
+            // Fallback to Cover if no file found
+            if (!image && page.cover) {
                 if (page.cover.type === 'external') {
                     image = page.cover.external.url;
                 } else if (page.cover.type === 'file') {
