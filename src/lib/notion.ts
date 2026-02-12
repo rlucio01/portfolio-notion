@@ -30,6 +30,7 @@ export const getProjects = async (): Promise<Project[]> => {
                         direction: "descending",
                     },
                 ],
+                page_size: 100
             }),
             next: { revalidate: 60 },
         });
@@ -40,20 +41,25 @@ export const getProjects = async (): Promise<Project[]> => {
         }
 
         const data = await res.json();
+        console.log(`DEBUG: Fetched ${data.results.length} projects`);
 
         return data.results.map((page: any) => {
             const props = page.properties;
+            const name = props.Nome?.title?.[0]?.plain_text || "Untitled Project";
 
             // Handle image extraction - prioritize "Arquivos e mídia" field, then Cover
             let image = null;
+            let debugSource = "none";
 
             // Check for "Arquivos e mídia"
             if (props["Arquivos e mídia"]?.files?.length > 0) {
                 const file = props["Arquivos e mídia"].files[0];
                 if (file.type === 'file') {
                     image = file.file.url;
+                    debugSource = "file";
                 } else if (file.type === 'external') {
                     image = file.external.url;
+                    debugSource = "external";
                 }
             }
 
@@ -61,14 +67,20 @@ export const getProjects = async (): Promise<Project[]> => {
             if (!image && page.cover) {
                 if (page.cover.type === 'external') {
                     image = page.cover.external.url;
+                    debugSource = "cover-external";
                 } else if (page.cover.type === 'file') {
                     image = page.cover.file.url;
+                    debugSource = "cover-file";
                 }
+            }
+
+            if (image) {
+                // console.log(`DEBUG: Image found for ${name} (${debugSource})`);
             }
 
             return {
                 id: page.id,
-                name: props.Nome?.title?.[0]?.plain_text || "Untitled Project",
+                name: name,
                 description: props.Texto?.rich_text?.[0]?.plain_text || "",
                 url: props.URL?.url || "#",
                 tags: props.Tags?.multi_select?.map((tag: any) => tag.name) || [],
