@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, Github, Mail, Globe } from "lucide-react";
+import { ArrowUpRight, Github, Mail, Globe, Code } from "lucide-react";
 import { Project } from "@/lib/notion";
 
 type Language = "en" | "pt";
@@ -158,22 +158,32 @@ export default function Portfolio({ projects }: { projects: Project[] }) {
                                         quality={85}
                                     />
                                 ) : (
-                                    <div
-                                        style={{
-                                            position: "absolute",
-                                            top: 0,
-                                            left: 0,
-                                            width: "100%",
-                                            height: "100%",
-                                            background: "linear-gradient(45deg, #1c1c1c, #2a2a2a)",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            color: "#444",
-                                        }}
-                                    >
-                                        <span>{t.projects.noImage}</span>
-                                    </div>
+                                    <>
+                                        <Image
+                                            src="/placeholder.png"
+                                            alt={project.name}
+                                            className="card-image"
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            style={{ objectFit: "cover", opacity: 0.5 }}
+                                            quality={85}
+                                        />
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                top: 0,
+                                                left: 0,
+                                                width: "100%",
+                                                height: "100%",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                background: "rgba(0,0,0,0.2)",
+                                            }}
+                                        >
+                                            <Code size={48} style={{ opacity: 0.3, color: "var(--text-primary)" }} />
+                                        </div>
+                                    </>
                                 )}
                             </div>
 
