@@ -32,7 +32,7 @@ export const getProjects = async (): Promise<Project[]> => {
                 ],
                 page_size: 100
             }),
-            next: { revalidate: 60 },
+            cache: "no-store",
         });
 
         if (!res.ok) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ArrowUpRight, Github, Mail, Globe } from "lucide-react";
 import { Project } from "@/lib/notion";
 
@@ -147,11 +148,14 @@ export default function Portfolio({ projects }: { projects: Project[] }) {
                         <article key={project.id} className="project-card">
                             <div className="card-image-wrapper">
                                 {project.image ? (
-                                    <img
+                                    <Image
                                         src={project.image}
                                         alt={project.name}
                                         className="card-image"
-                                        loading="lazy"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        style={{ objectFit: "cover" }}
+                                        quality={85}
                                     />
                                 ) : (
                                     <div
