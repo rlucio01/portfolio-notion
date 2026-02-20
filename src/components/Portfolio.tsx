@@ -144,70 +144,84 @@ export default function Portfolio({ projects }: { projects: Project[] }) {
                 </div>
 
                 <div className="project-grid">
-                    {projects.map((project) => (
-                        <article key={project.id} className="project-card">
-                            <div className="card-image-wrapper">
-                                {project.image ? (
-                                    <Image
-                                        src={project.image}
-                                        alt={project.name}
-                                        className="card-image"
-                                        fill
-                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                        style={{ objectFit: "cover" }}
-                                        quality={85}
-                                    />
-                                ) : (
-                                    <>
-                                        <Image
-                                            src="/placeholder.png"
-                                            alt={project.name}
-                                            className="card-image"
-                                            fill
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                            style={{ objectFit: "cover", opacity: 0.5 }}
-                                            quality={85}
-                                        />
-                                        <div
-                                            style={{
-                                                position: "absolute",
-                                                top: 0,
-                                                left: 0,
-                                                width: "100%",
-                                                height: "100%",
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                background: "rgba(0,0,0,0.2)",
-                                            }}
-                                        >
-                                            <Code size={48} style={{ opacity: 0.3, color: "var(--text-primary)" }} />
+                    {projects.map((project) => {
+                        const isExternal = project.url && project.url !== "#";
+                        return (
+                            <article key={project.id} className="project-card">
+                                <a
+                                    href={project.url}
+                                    target={isExternal ? "_blank" : undefined}
+                                    rel="noreferrer"
+                                    className="project-card-link-wrapper"
+                                    style={{ display: "flex", flexDirection: "column", height: "100%", color: "inherit", textDecoration: "none" }}
+                                >
+                                    <div className="card-image-wrapper">
+                                        {project.image ? (
+                                            <Image
+                                                src={project.image}
+                                                alt={project.name}
+                                                className="card-image"
+                                                fill
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                style={{ objectFit: "cover" }}
+                                                quality={85}
+                                            />
+                                        ) : (
+                                            <>
+                                                <Image
+                                                    src="/placeholder.png"
+                                                    alt={project.name}
+                                                    className="card-image"
+                                                    fill
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                    style={{ objectFit: "cover", opacity: 0.5 }}
+                                                    quality={85}
+                                                />
+                                                <div
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: 0,
+                                                        left: 0,
+                                                        width: "100%",
+                                                        height: "100%",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        background: "rgba(0,0,0,0.2)",
+                                                    }}
+                                                >
+                                                    <Code size={48} style={{ opacity: 0.3, color: "var(--text-primary)" }} />
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+
+                                    <div className="card-content">
+                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
+                                            <h3 className="card-title">{project.name}</h3>
+                                            {isExternal && (
+                                                <span style={{ color: "var(--text-secondary)" }}>
+                                                    <ArrowUpRight size={20} />
+                                                </span>
+                                            )}
                                         </div>
-                                    </>
-                                )}
-                            </div>
 
-                            <div className="card-content">
-                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
-                                    <h3 className="card-title">{project.name}</h3>
-                                    <a href={project.url} target="_blank" rel="noreferrer" style={{ color: "var(--text-secondary)" }}>
-                                        <ArrowUpRight size={20} />
-                                    </a>
-                                </div>
+                                        <p className="card-desc">{project.description}</p>
 
-                                <p className="card-desc">{project.description}</p>
-
-                                <div className="tags">
-                                    {project.tags.map((tag) => (
-                                        <span key={tag} className="tag">
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        </article>
-                    ))}
+                                        <div className="tags">
+                                            {project.tags.map((tag) => (
+                                                <span key={tag} className="tag">
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </a>
+                            </article>
+                        );
+                    })}
                 </div>
+
             </section>
 
             {/* Contact / Footer Section */}
