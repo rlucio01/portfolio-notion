@@ -165,7 +165,7 @@ export default function Portfolio({ projects }: { projects: Project[] }) {
                                                 className="card-image"
                                                 fill
                                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                                style={{ objectFit: "cover" }}
+                                                style={{ objectFit: "cover", objectPosition: "top" }}
                                                 quality={85}
                                             />
                                         ) : (
@@ -176,7 +176,7 @@ export default function Portfolio({ projects }: { projects: Project[] }) {
                                                     className="card-image"
                                                     fill
                                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                                    style={{ objectFit: "cover", opacity: 0.5 }}
+                                                    style={{ objectFit: "cover", objectPosition: "top", opacity: 0.5 }}
                                                     quality={85}
                                                 />
                                                 <div
