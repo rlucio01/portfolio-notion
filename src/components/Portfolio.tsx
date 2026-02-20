@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, Github, Mail, Globe, Code } from "lucide-react";
+import { ArrowUpRight, Github, Mail, Globe, Code, MessageSquare } from "lucide-react";
 import { Project } from "@/lib/notion";
 
 type Language = "en" | "pt";
@@ -32,6 +32,7 @@ const translations = {
             title: "Let's work together",
             desc: "Have a project in mind? Feel free to reach out.",
             btn: "Get in touch",
+            whatsapp: "Hello! I saw your portfolio and would like to talk about a project.",
             copyright: "RLucio. Built with Next.js & Notion.",
         },
     },
@@ -59,6 +60,7 @@ const translations = {
             title: "Vamos trabalhar juntos",
             desc: "Tem um projeto em mente? Entre em contato.",
             btn: "Fale comigo",
+            whatsapp: "Olá! Vi seu portfólio e gostaria de conversar sobre um projeto.",
             copyright: "RLucio. Feito com Next.js & Notion.",
         },
     },
@@ -231,8 +233,13 @@ export default function Portfolio({ projects }: { projects: Project[] }) {
                         {t.contact.title}
                     </h2>
                     <p style={{ marginBottom: "2rem" }}>{t.contact.desc}</p>
-                    <a href="mailto:rlucio01@gmail.com" className="btn">
-                        <Mail size={18} /> {t.contact.btn}
+                    <a
+                        href={`https://wa.me/5521993962050?text=${encodeURIComponent(t.contact.whatsapp)}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn"
+                    >
+                        <MessageSquare size={18} /> {t.contact.btn}
                     </a>
 
                     <div style={{ marginTop: "4rem", fontSize: "0.875rem", color: "#555" }}>
